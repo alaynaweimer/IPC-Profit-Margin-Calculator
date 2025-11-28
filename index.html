@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profit Margin Calculator | Ignite Positive Changes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Ignite Positive Changes Brand Colors */
+            --ignite-red: #cf462e;
+            --ignite-yellow: #ffcd1d;
+            --ignite-navy: #35575f;
+            --ignite-sage: #728b8f;
+            --ignite-orange: #faa22b;
+            --ignite-cream: #fffdfc;
+            
+            /* Extended palette */
+            --red-dark: #b53d28;
+            --red-light: #e8735a;
+            --navy-light: #456a73;
+            --sage-light: #9ab0b4;
+            
+            /* Neutrals */
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --shadow-lg: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ignite-cream);
+            color: var(--gray-700);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--ignite-navy);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+        }
+
+        .back-link {
+            color: var(--gray-300);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--white);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Tool Header */
+        .tool-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--ignite-red) 0%, var(--ignite-orange) 100%);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .tool-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            color: var(--ignite-navy);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .tool-header p {
+            font-size: 1.1rem;
+            color: var(--gray-500);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: var(--white);
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            color: var(--gray-700);
+            background: var(--gray-50);
+        }
+
+        .tab.active {
+            background: var(--ignite-navy);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(53, 87, 95, 0.3);
+        }
+
+        .tab-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================
+           CALCULATOR TAB STYLES
+           ============================ */
+        .calculator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .calculator-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input Panel */
+        .input-panel {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            color: var(--ignite-navy);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .panel-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-bottom: 25px;
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .input-group .hint {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .currency {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 14px 14px 35px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--gray-800);
+            transition: all 0.2s;
+            background: var(--gray-50);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--ignite-orange);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(250, 162, 43, 0.15);
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--gray-400);
+        }
+
+        /* Divider */
+        .input-divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: 25px 0;
+        }
+
+        /* Calculate Button */
+        .calculate-btn {
+            width: 100%;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, var(--ignite-red) 0%, var(--red-dark) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(207, 70, 46, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(207, 70, 46, 0.4);
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Margin Cards - Compact */
+        .margin-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .margin-card {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 18px 20px;
+            border-left: 4px solid var(--gray-300);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .margin-card.gross { border-left-color: var(--ignite-sage); }
+        .margin-card.operating { border-left-color: var(--ignite-yellow); }
+        .margin-card.net { 
+            border-left-color: var(--ignite-red); 
+            background: linear-gradient(135deg, rgba(207, 70, 46, 0.08) 0%, rgba(250, 162, 43, 0.03) 100%);
+        }
+
+        .margin-card .margin-info {
+            flex: 1;
+        }
+
+        .margin-card .margin-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            margin-bottom: 2px;
+        }
+
+        .margin-card .margin-amount {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .margin-card .margin-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ignite-navy);
+        }
+
+        /* Health Badge */
+        .health-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .health-badge.excellent { background: #d1fae5; color: #065f46; }
+        .health-badge.good { background: #d4edda; color: #155724; }
+        .health-badge.fair { background: #fff3cd; color: #856404; }
+        .health-badge.low { background: #ffe5d9; color: #9c4221; }
+        .health-badge.negative { background: #fee2e2; color: #991b1b; }
+
+        /* Breakdown Table - Compact */
+        .breakdown {
+            background: var(--gray-50);
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .breakdown-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9rem;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            color: var(--ignite-navy);
+            padding-top: 12px;
+            margin-top: 5px;
+            border-top: 2px solid var(--gray-300);
+        }
+
+        .breakdown-row .label {
+            color: var(--gray-600);
+        }
+
+        .breakdown-row .value {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .breakdown-row .value.negative {
+            color: var(--ignite-red);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 30px;
+            color: var(--gray-400);
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        /* Switch to Learn prompt */
+        .learn-prompt {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--ignite-cream);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .learn-prompt a {
+            color: var(--ignite-red);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .learn-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================
+           LEARN TAB STYLES
+           ============================ */
+        .learn-content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Why Section */
+        .why-section {
+            background: linear-gradient(135deg, var(--ignite-navy) 0%, var(--navy-light) 100%);
+            border-radius: 20px;
+            padding: 35px 40px;
+            margin-bottom: 30px;
+            color: var(--white);
+        }
+
+        .why-section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .why-section p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+        }
+
+        .why-section p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .why-section strong {
+            color: var(--ignite-orange);
+        }
+
+        .why-callout {
+            background: rgba(255,255,255,0.1);
+            border-left: 3px solid var(--ignite-orange);
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .why-callout p {
+            color: var(--white);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Concept Cards */
+        .concepts-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .concepts-section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            color: var(--ignite-navy);
+            margin-bottom: 25px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .concept-card {
+            padding: 22px;
+            background: var(--gray-50);
+            border-radius: 14px;
+            border-top: 4px solid var(--gray-300);
+        }
+
+        .concept-card.gross { border-top-color: var(--ignite-sage); }
+        .concept-card.operating { border-top-color: var(--ignite-yellow); }
+        .concept-card.net { border-top-color: var(--ignite-red); }
+
+        .concept-card h3 {
+            font-size: 1rem;
+            color: var(--ignite-navy);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-card h3 span {
+            font-size: 1.2rem;
+        }
+
+        .concept-card p {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .concept-card .formula {
+            background: var(--white);
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--ignite-navy);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 10px;
+        }
+
+        .concept-card .good-range {
+            display: inline-block;
+            padding: 5px 10px;
+            background: var(--white);
+            border-radius: 5px;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        .concept-card .good-range strong {
+            color: var(--ignite-sage);
+        }
+
+        /* COGS Explainer */
+        .explainer-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .explainer-section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            color: var(--ignite-navy);
+            margin-bottom: 20px;
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 700px) {
+            .explainer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .explainer-box {
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .explainer-box.yes {
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+        }
+
+        .explainer-box.no {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+        }
+
+        .explainer-box h4 {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explainer-box.yes h4 { color: #065f46; }
+        .explainer-box.no h4 { color: #991b1b; }
+
+        .explainer-box ul {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .explainer-box.yes ul { color: #047857; }
+        .explainer-box.no ul { color: #b91c1c; }
+
+        .explainer-box li {
+            padding: 5px 0;
+        }
+
+        /* Pro Tips */
+        .pro-tips {
+            background: linear-gradient(135deg, var(--ignite-cream) 0%, #fff 100%);
+            border: 2px solid var(--ignite-yellow);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .pro-tips h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.2rem;
+            color: var(--ignite-navy);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pro-tips h3 .badge {
+            background: var(--ignite-yellow);
+            color: var(--ignite-navy);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pro-tips ul {
+            list-style: none;
+        }
+
+        .pro-tips li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            line-height: 1.6;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .pro-tips li:last-child {
+            border-bottom: none;
+        }
+
+        .pro-tips li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        .pro-tips li strong {
+            color: var(--ignite-navy);
+        }
+
+        /* Benchmarks */
+        .benchmarks-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+        }
+
+        .benchmarks-section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            color: var(--ignite-navy);
+            margin-bottom: 10px;
+        }
+
+        .benchmarks-section > p {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .benchmark-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .benchmark-item .industry {
+            color: var(--gray-600);
+        }
+
+        .benchmark-item .range {
+            font-weight: 600;
+            color: var(--ignite-navy);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 30px 30px;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 50px;
+        }
+
+        .footer-brand {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .footer-brand a {
+            color: var(--ignite-navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-brand a:hover {
+            color: var(--ignite-red);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .footer-copyright .divider {
+            margin: 0 8px;
+            color: var(--gray-300);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .margin-card {
+            animation: fadeInUp 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .margin-card:nth-child(1) { animation-delay: 0.05s; }
+        .margin-card:nth-child(2) { animation-delay: 0.1s; }
+        .margin-card:nth-child(3) { animation-delay: 0.15s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <!-- UPDATE THIS URL to your hosted logo location -->
+            <img src="images/ignite-logo.png" alt="Ignite Positive Changes" class="logo-img">
+        </div>
+        <a href="javascript:history.back()" class="back-link">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Toolkit
+        </a>
+    </header>
+
+    <div class="container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-badge">Financial Tool</div>
+            <h1>Profit Margin Calculator</h1>
+            <p>See how much money your business actually keeps from every dollar earned.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('calculator')">
+                    <span class="tab-icon">📊</span>
+                    Calculator
+                </button>
+                <button class="tab" onclick="switchTab('learn')">
+                    <span class="tab-icon">📚</span>
+                    Learn
+                </button>
+            </div>
+        </div>
+
+        <!-- Calculator Tab -->
+        <div id="calculator-tab" class="tab-content active">
+            <div class="calculator-layout">
+                <!-- Input Panel -->
+                <div class="input-panel">
+                    <h2 class="panel-title">Enter Your Numbers</h2>
+                    <p class="panel-subtitle">Monthly or annual — just be consistent</p>
+
+                    <div class="input-group">
+                        <label>
+                            Total Revenue
+                            <span class="hint">Sales & income</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="revenue" placeholder="50,000" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>
+                            Cost of Goods/Services (COGS)
+                            <span class="hint">Direct costs</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="cogs" placeholder="15,000" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-divider"></div>
+
+                    <div class="input-group">
+                        <label>
+                            Operating Expenses
+                            <span class="hint">Overhead</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="operating" placeholder="10,000" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>
+                            Other Expenses
+                            <span class="hint">Taxes, interest, etc.</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="other" placeholder="5,000" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculate()">Calculate Margins</button>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="results-panel">
+                    <h2 class="panel-title">Your Margins</h2>
+                    <p class="panel-subtitle">What you keep from every dollar</p>
+
+                    <div id="results-content">
+                        <div class="empty-state">
+                            <div class="icon">📊</div>
+                            <p>Enter your numbers to see results</p>
+                        </div>
+                    </div>
+
+                    <div class="learn-prompt">
+                        Not sure what these mean? <a onclick="switchTab('learn')">Learn about profit margins →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learn Tab -->
+        <div id="learn-tab" class="tab-content">
+            <div class="learn-content-wrapper">
+                
+                <!-- Why This Matters -->
+                <div class="why-section">
+                    <h2>🎯 Why Profit Margins Matter</h2>
+                    <p><strong>Revenue is vanity. Profit is sanity.</strong> Many business owners focus on how much money comes in, but what really matters is how much you <em>keep</em>.</p>
+                    <p>A business doing $500K in revenue with 5% margins makes less profit than one doing $200K with 20% margins. Your margins tell the true story of your business health.</p>
+                    <div class="why-callout">
+                        <p>📊 <strong>Reality check:</strong> If your net profit margin is below 10%, you're working hard but keeping very little. Every improvement to your margins goes straight to your pocket.</p>
+                    </div>
+                </div>
+
+                <!-- The Three Margins -->
+                <div class="concepts-section">
+                    <h2>📐 The Three Profit Margins</h2>
+                    <div class="concept-grid">
+                        <div class="concept-card gross">
+                            <h3><span>📗</span> Gross Margin</h3>
+                            <p>What's left after paying direct costs to deliver your product/service. Shows production efficiency.</p>
+                            <div class="formula">(Revenue − COGS) ÷ Revenue × 100</div>
+                            <div class="good-range">Target: <strong>50-70%</strong> for services</div>
+                        </div>
+                        
+                        <div class="concept-card operating">
+                            <h3><span>📙</span> Operating Margin</h3>
+                            <p>What's left after overhead (rent, software, salaries). Shows how efficiently you run the business.</p>
+                            <div class="formula">(Revenue − COGS − OpEx) ÷ Revenue × 100</div>
+                            <div class="good-range">Target: <strong>15-25%</strong> typical</div>
+                        </div>
+                        
+                        <div class="concept-card net">
+                            <h3><span>📕</span> Net Margin</h3>
+                            <p>The bottom line — what you actually keep after ALL expenses. Your true profitability.</p>
+                            <div class="formula">(Revenue − All Costs) ÷ Revenue × 100</div>
+                            <div class="good-range">Target: <strong>10-20%</strong> healthy</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COGS Explainer -->
+                <div class="explainer-section">
+                    <h2>🤔 What Counts as COGS?</h2>
+                    <div class="explainer-grid">
+                        <div class="explainer-box yes">
+                            <h4>✅ Include in COGS</h4>
+                            <ul>
+                                <li>• Materials and supplies used</li>
+                                <li>• Subcontractor/freelancer fees</li>
+                                <li>• Direct labor on projects</li>
+                                <li>• Shipping and delivery costs</li>
+                                <li>• Manufacturing costs</li>
+                                <li>• Packaging materials</li>
+                            </ul>
+                        </div>
+                        <div class="explainer-box no">
+                            <h4>❌ NOT COGS (Put in Operating)</h4>
+                            <ul>
+                                <li>• Rent and utilities</li>
+                                <li>• Software subscriptions</li>
+                                <li>• Marketing and advertising</li>
+                                <li>• Your salary</li>
+                                <li>• Insurance</li>
+                                <li>• Office supplies</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips">
+                    <h3>💼 Pro Tips <span class="badge">From the Field</span></h3>
+                    <ul>
+                        <li><strong>Track margins monthly, not just annually.</strong> Seasonal swings can hide problems. A bad Q4 can wipe out a great Q1-Q3.</li>
+                        <li><strong>High revenue with low margins = a job, not a business.</strong> If you're working 60 hours/week for thin margins, your hourly rate might be lower than you think.</li>
+                        <li><strong>Raising prices is often easier than cutting costs.</strong> A 10% price increase goes straight to profit. Most clients won't leave over 10%.</li>
+                        <li><strong>Know your "fully loaded" cost.</strong> Many owners forget to include their own salary, benefits, and taxes. Include yourself!</li>
+                        <li><strong>Watch margin trends, not just snapshots.</strong> Is your margin improving or declining? That trend matters more than any single number.</li>
+                    </ul>
+                </div>
+
+                <!-- Benchmarks -->
+                <div class="benchmarks-section">
+                    <h2>📊 Industry Benchmarks</h2>
+                    <p>Net profit margin averages by industry. Top performers beat these numbers.</p>
+                    <div class="benchmark-grid">
+                        <div class="benchmark-item">
+                            <span class="industry">Professional Services</span>
+                            <span class="range">15-25%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Consulting</span>
+                            <span class="range">15-30%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Healthcare Services</span>
+                            <span class="range">10-20%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Accounting</span>
+                            <span class="range">18-25%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Marketing Agency</span>
+                            <span class="range">10-15%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Software/SaaS</span>
+                            <span class="range">20-40%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Retail</span>
+                            <span class="range">2-5%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Restaurants</span>
+                            <span class="range">3-9%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Construction</span>
+                            <span class="range">5-10%</span>
+                        </div>
+                        <div class="benchmark-item">
+                            <span class="industry">Nonprofits (Target)</span>
+                            <span class="range">5-15%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">
+            Part of the <a href="#">Ignite Positive Changes Business Toolkit</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 <a href="#">Discover Your Success with Alayna Marie</a>
+            <span class="divider">|</span>
+            Built for Ignite Positive Changes Fractional
+        </div>
+    </footer>
+
+    <script>
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Update active tab button
+            const tabs = document.querySelectorAll('.tab');
+            if (tabName === 'calculator') {
+                tabs[0].classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+            }
+        }
+
+        function calculate() {
+            const revenue = parseFloat(document.getElementById('revenue').value) || 0;
+            const cogs = parseFloat(document.getElementById('cogs').value) || 0;
+            const operating = parseFloat(document.getElementById('operating').value) || 0;
+            const other = parseFloat(document.getElementById('other').value) || 0;
+
+            if (revenue === 0) {
+                document.getElementById('results-content').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📊</div>
+                        <p>Enter your numbers to see results</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate
+            const grossProfit = revenue - cogs;
+            const operatingProfit = revenue - cogs - operating;
+            const netProfit = revenue - cogs - operating - other;
+
+            const grossMargin = (grossProfit / revenue) * 100;
+            const operatingMargin = (operatingProfit / revenue) * 100;
+            const netMargin = (netProfit / revenue) * 100;
+
+            // Health status
+            let healthStatus, healthClass, healthIcon;
+            if (netMargin >= 20) {
+                healthStatus = "Excellent"; healthClass = "excellent"; healthIcon = "🌟";
+            } else if (netMargin >= 10) {
+                healthStatus = "Good"; healthClass = "good"; healthIcon = "✅";
+            } else if (netMargin >= 5) {
+                healthStatus = "Fair"; healthClass = "fair"; healthIcon = "⚠️";
+            } else if (netMargin >= 0) {
+                healthStatus = "Low"; healthClass = "low"; healthIcon = "🔶";
+            } else {
+                healthStatus = "Losing Money"; healthClass = "negative"; healthIcon = "🚨";
+            }
+
+            // Format helpers
+            const formatCurrency = (num) => new Intl.NumberFormat('en-US', { 
+                style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 
+            }).format(num);
+            
+            const formatPercent = (num) => num.toFixed(1) + '%';
+
+            // Render
+            document.getElementById('results-content').innerHTML = `
+                <div class="health-badge ${healthClass}">
+                    <span>${healthIcon}</span>
+                    Business Health: ${healthStatus}
+                </div>
+
+                <div class="margin-cards">
+                    <div class="margin-card gross">
+                        <div class="margin-info">
+                            <div class="margin-label">Gross Margin</div>
+                            <div class="margin-amount">${formatCurrency(grossProfit)} profit</div>
+                        </div>
+                        <div class="margin-value">${formatPercent(grossMargin)}</div>
+                    </div>
+                    
+                    <div class="margin-card operating">
+                        <div class="margin-info">
+                            <div class="margin-label">Operating Margin</div>
+                            <div class="margin-amount">${formatCurrency(operatingProfit)} profit</div>
+                        </div>
+                        <div class="margin-value">${formatPercent(operatingMargin)}</div>
+                    </div>
+                    
+                    <div class="margin-card net">
+                        <div class="margin-info">
+                            <div class="margin-label">Net Margin</div>
+                            <div class="margin-amount">${formatCurrency(netProfit)} profit</div>
+                        </div>
+                        <div class="margin-value">${formatPercent(netMargin)}</div>
+                    </div>
+                </div>
+
+                <div class="breakdown">
+                    <div class="breakdown-title">Breakdown</div>
+                    <div class="breakdown-row">
+                        <span class="label">Revenue</span>
+                        <span class="value">${formatCurrency(revenue)}</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="label">COGS</span>
+                        <span class="value negative">−${formatCurrency(cogs)}</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="label">Operating Expenses</span>
+                        <span class="value negative">−${formatCurrency(operating)}</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="label">Other Expenses</span>
+                        <span class="value negative">−${formatCurrency(other)}</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="label">Net Profit</span>
+                        <span class="value ${netProfit < 0 ? 'negative' : ''}">${formatCurrency(netProfit)}</span>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
